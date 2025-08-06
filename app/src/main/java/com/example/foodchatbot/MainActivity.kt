@@ -20,7 +20,6 @@ import com.example.foodchatbot.ui.theme.FoodChatBotTheme
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +41,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GeminiChatScreen() {
     var prompt by remember { mutableStateOf("") }
+    var mainIngredients by remember { mutableStateOf("") }
+    var cookingMethod by remember { mutableStateOf("") }
+    var sauces by remember { mutableStateOf("") }
     var responseText by remember { mutableStateOf("Gemini's response will appear here.") }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -75,15 +77,38 @@ fun GeminiChatScreen() {
             onValueChange = { prompt = it },
             label = { Text("Enter your food title here...") },
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 100.dp, max = 150.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = Color.LightGray,
-                unfocusedContainerColor = Color(0xFFF0F0F0),
-                focusedContainerColor = Color(0xFFF0F0F0)
-            )
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = mainIngredients,
+            onValueChange = { mainIngredients = it },
+            label = { Text("Enter the main / sub ingredients of the food.")},
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = cookingMethod,
+            onValueChange = { cookingMethod = it},
+            label = { Text("Enter the cooking method of the food.") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = sauces,
+            onValueChange = { sauces = it },
+            label = { Text("Enter whether seasonings, dressings, or sauces are added.") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -95,7 +120,18 @@ fun GeminiChatScreen() {
                     responseText = "Generating response..." // Show loading message
                     coroutineScope.launch {
                         try {
-                            val response = generativeModel.generateContent(prompt + " Can you convert this food name into the official title? Give me the OFFICIAL TITLE ONLY.")
+                            val fullPrompt = """
+                                음식 이름: $prompt
+                                주재료/부재료: $mainIngredients
+                                조리법: $cookingMethod
+                                양념장/소스: $sauces
+                                
+                                이 음식 정보를 바탕으로, 공식적인 음식 이름을 한 가지로만 제공해주세요.
+                                주재료/부재료의 공식 명칭들도 한 가지로만 제공해주세요.
+                                조리방법도 명시적으로 제공해주세요.
+                                양념장/소스의 공식 명칭들도 한 가지로만 제공해주세요.
+                            """.trimIndent()
+                            val response = generativeModel.generateContent(fullPrompt)
                             responseText = response.text ?: "No response generated or an error occurred."
                         } catch (e: Exception) {
                             responseText = "Error: ${e.message}"

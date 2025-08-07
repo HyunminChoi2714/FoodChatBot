@@ -13,12 +13,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.foodchatbot.ui.theme.FoodChatBotTheme
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.nio.charset.StandardCharsets
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +30,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FoodChatBotTheme {
-                Surface (
+                Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
@@ -48,6 +52,24 @@ fun GeminiChatScreen() {
     var isLoading by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    // State to hold the content of the CSV file
+    var csvContent by remember { mutableStateOf("") }
+
+    // Read the CSV file from assets when the composable is first created
+    LaunchedEffect(Unit) {
+        try {
+            context.assets.open("foodcode.csv").use { inputStream ->
+                val reader = BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                csvContent = reader.readText()
+            }
+        } catch (e: Exception) {
+            // Handle file not found or other exceptions
+            csvContent = "Error reading foodcode.csv: ${e.message}"
+            e.printStackTrace()
+        }
+    }
 
     val generativeModel = remember {
         GenerativeModel(
@@ -56,6 +78,7 @@ fun GeminiChatScreen() {
         )
     }
 
+    // ... (rest of your UI code remains the same) ...
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,6 +87,7 @@ fun GeminiChatScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        // ... (UI elements like TextFields and Spacer) ...
         Text(
             text = "Food Name Conversion",
             fontSize = 28.sp,
@@ -126,10 +150,10 @@ fun GeminiChatScreen() {
                                 조리법: $cookingMethod
                                 양념장/소스: $sauces
                                 
-                                이 음식 정보를 바탕으로, 공식적인 음식 이름을 한 가지로만 제공해주세요.
-                                주재료/부재료의 공식 명칭들도 한 가지로만 제공해주세요.
-                                조리방법도 명시적으로 제공해주세요.
-                                양념장/소스의 공식 명칭들도 한 가지로만 제공해주세요.
+                                이 음식 정보를 바탕으로, 이 식품에 들어가 있는 재료들의 농진청식품코드를 모두 다 적어주세요.
+                                
+                                다음은 참고용으로 제공된 식품 코드 데이터입니다. 이 식품 코드 데이터에 있는 내용만 적어주세요:
+                                $csvContent
                             """.trimIndent()
                             val response = generativeModel.generateContent(fullPrompt)
                             responseText = response.text ?: "No response generated or an error occurred."
@@ -185,13 +209,5 @@ fun GeminiChatScreen() {
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FoodChatBotTheme {
-        GeminiChatScreen()
     }
 }

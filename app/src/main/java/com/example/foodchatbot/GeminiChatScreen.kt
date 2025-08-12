@@ -22,7 +22,8 @@ import java.nio.charset.StandardCharsets
 
 data class FoodItem(
     val foodName: String,
-    val foodCode: String
+    val foodCode: String,
+    var geminiResponse: String? = null
 )
 
 data class FoodInputState(

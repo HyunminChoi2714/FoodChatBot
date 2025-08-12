@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/app/src/androidTest/java/com/example/foodchatbot/ExampleInstrumentedTest.kt;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/app/src/main/java/com/example/foodchatbot/ui/theme/Color.kt;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/app/src/main/java/com/example/foodchatbot/ui/theme/Theme.kt;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/app/src/main/java/com/example/foodchatbot/ui/theme/Type.kt;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/app/src/main/java/com/example/foodchatbot/MainActivity.kt;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/app/src/test/java/com/example/foodchatbot/ExampleUnitTest.kt;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/app/build.gradle.kts;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/build.gradle.kts;C:/Users/alexa/AndroidStudioProjects/FoodChatBot/settings.gradle.kts" />
+  </component>
+</project>

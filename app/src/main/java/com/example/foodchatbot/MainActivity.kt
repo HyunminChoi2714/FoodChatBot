@@ -292,7 +292,7 @@ fun GeminiChatScreen() {
                                                 음식 이름: ${item.foodName}
                                                 
                                                 ${csvContent2}
-                                                위에 제공된 데이터를 바탕으로, 음식의 이름을 **반드시** 항목으로만 기술해줘.
+                                                위에 제공된 데이터를 바탕으로, 음식의 이름을 **반드시** **항목에 있는 내용 그대로** 기술해줘.
                                             """.trimIndent()
                                             isLoadingButton = true
                                             coroutineScope.launch {

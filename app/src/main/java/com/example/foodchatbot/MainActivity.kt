@@ -31,7 +31,8 @@ import org.json.JSONObject
 
 data class FoodItem(
     val foodName: String,
-    val foodCode: String
+    val foodCode: String,
+    val geminiResponse: String? = null
 )
 
 data class FoodInputState(
@@ -66,6 +67,9 @@ fun GeminiChatScreen() {
     var isLoading by remember { mutableStateOf(false) }
     var foodItemsState by remember { mutableStateOf(emptyList<FoodItem>()) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    var selectedFoodItem by remember { mutableStateOf<FoodItem?>(null) }
+    var isLoadingButton by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -260,47 +264,59 @@ fun GeminiChatScreen() {
                 .padding(top = 16.dp)
         ) {
             when {
-                isLoading -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text("Processing...")
-                    }
-                }
                 foodItemsState.isNotEmpty() -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(foodItemsState, key = { it.foodCode }) { item ->
+                        items(foodItemsState, key = { it.foodCode })  { item ->
+                            val isSelected = (selectedFoodItem?.foodCode == item.foodCode)
                             Card(
                                 onClick = {
-                                    responseText = "Selected: ${item.foodName} (${item.foodCode})"
+                                    if (isSelected && item.geminiResponse != null) {
+                                        selectedFoodItem = null
+                                    }
+                                    else if (!isLoadingButton) {
+                                        selectedFoodItem = item
+                                        isLoadingButton = true
+                                        coroutineScope.launch {
+                                            try {
+                                                val detailPrompt = "Tell me about the food code ${item.foodCode} in detail."
+                                                val geminiResponse = generativeModel?.generateContent(detailPrompt)
+                                                val updatedList = foodItemsState.map {
+                                                    if (it.foodCode == item.foodCode) {
+                                                        it.copy(geminiResponse = geminiResponse?.text)
+                                                    }
+                                                    else {it}
+                                                }
+                                                foodItemsState = updatedList
+                                            }
+                                            catch (e: Exception) {
+                                                errorMessage = "Error fetching details: ${e.message}"
+                                            }
+                                            finally {
+                                                isLoadingButton = false
+                                            }
+                                        }
+                                    }
                                 },
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(item.foodName, fontWeight = FontWeight.Bold)
                                     Text(item.foodCode, color = Color.Gray)
+                                    if (isSelected) {
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        if (isLoadingButton) {
+                                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                                            Text("Loading details....")
+                                        }
+                                        else {
+                                            Text(item.geminiResponse ?: "No details found.")
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                }
-                else -> {
-                    Card(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp)
-                        ) {
-                            Text(responseText)
                         }
                     }
                 }

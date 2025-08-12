@@ -69,6 +69,7 @@ fun GeminiChatScreen() {
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     var selectedFoodItem by remember { mutableStateOf<FoodItem?>(null) }
+    var expandedFoodCodes by remember { mutableStateOf(setOf<String>()) }
     var isLoadingButton by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -76,11 +77,17 @@ fun GeminiChatScreen() {
 
     // Read the CSV file from assets
     var csvContent by remember { mutableStateOf("") }
+    var csvContent2 by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         try {
             context.assets.open("foodcode.csv").use { inputStream ->
                 BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8)).use { reader ->
                     csvContent = reader.readText()
+                }
+            }
+            context.assets.open("foodclassification.csv").use { inputStream ->
+                BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8)).use { reader ->
+                    csvContent2 = reader.readText()
                 }
             }
         } catch (e: Exception) {
@@ -270,32 +277,43 @@ fun GeminiChatScreen() {
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(foodItemsState, key = { it.foodCode })  { item ->
+                            val isExpanded = expandedFoodCodes.contains(item.foodCode)
                             val isSelected = (selectedFoodItem?.foodCode == item.foodCode)
                             Card(
                                 onClick = {
-                                    if (isSelected && item.geminiResponse != null) {
-                                        selectedFoodItem = null
+                                    if (isExpanded) {
+                                        expandedFoodCodes = expandedFoodCodes - item.foodCode
                                     }
-                                    else if (!isLoadingButton) {
-                                        selectedFoodItem = item
-                                        isLoadingButton = true
-                                        coroutineScope.launch {
-                                            try {
-                                                val detailPrompt = "Tell me about the food code ${item.foodCode} in detail."
-                                                val geminiResponse = generativeModel?.generateContent(detailPrompt)
-                                                val updatedList = foodItemsState.map {
-                                                    if (it.foodCode == item.foodCode) {
-                                                        it.copy(geminiResponse = geminiResponse?.text)
+                                    else {
+                                        expandedFoodCodes = expandedFoodCodes + item.foodCode
+
+                                        if (item.geminiResponse == null) {
+                                            val detailPrompt = """
+                                                음식 이름: ${item.foodName}
+                                                
+                                                ${csvContent2}
+                                                위에 제공된 데이터를 바탕으로, 음식의 이름을 **반드시** 항목으로만 기술해줘.
+                                            """.trimIndent()
+                                            isLoadingButton = true
+                                            coroutineScope.launch {
+                                                try {
+                                                    val geminiResponse = generativeModel?.generateContent(detailPrompt)
+                                                    val updatedList = foodItemsState.map {
+                                                        if (it.foodCode == item.foodCode) {
+                                                            it.copy(geminiResponse = geminiResponse?.text)
+                                                        }
+                                                        else {
+                                                            it
+                                                        }
                                                     }
-                                                    else {it}
+                                                    foodItemsState = updatedList
                                                 }
-                                                foodItemsState = updatedList
-                                            }
-                                            catch (e: Exception) {
-                                                errorMessage = "Error fetching details: ${e.message}"
-                                            }
-                                            finally {
-                                                isLoadingButton = false
+                                                catch (e: Exception) {
+                                                    errorMessage = "Error fetching details"
+                                                }
+                                                finally {
+                                                    isLoadingButton = false
+                                                }
                                             }
                                         }
                                     }
@@ -314,6 +332,10 @@ fun GeminiChatScreen() {
                                         else {
                                             Text(item.geminiResponse ?: "No details found.")
                                         }
+                                    }
+                                    if (isExpanded) {
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Text(item.geminiResponse ?: "Loading details...")
                                     }
                                 }
                             }

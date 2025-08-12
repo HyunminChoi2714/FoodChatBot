@@ -60,15 +60,6 @@ fun FoodCodeScreen(
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
-        // "Go Back" button at the top
-        Button(
-            onClick = onBack,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
-        ) {
-            Text("Go Back")
-        }
-
-        // LazyColumn to display food items
         LazyColumn(
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -118,6 +109,13 @@ fun FoodCodeScreen(
                     }
                 }
             }
+        }
+        // "Go Back" button at the top
+        Button(
+            onClick = onBack,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        ) {
+            Text("Go Back")
         }
     }
 }

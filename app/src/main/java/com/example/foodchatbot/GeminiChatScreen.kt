@@ -3,6 +3,8 @@ package com.example.foodchatbot
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.ai.client.generativeai.GenerativeModel
@@ -42,6 +45,7 @@ fun GeminiChatScreen(
     var responseText by remember { mutableStateOf("Gemini's response will appear here.") }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var dynamicInputInfo by remember { mutableStateOf<DynamicInputInfo?>(null) }
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current

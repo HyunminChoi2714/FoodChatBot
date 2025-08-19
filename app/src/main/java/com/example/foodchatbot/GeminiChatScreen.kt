@@ -65,7 +65,7 @@ fun GeminiChatScreen(
         try {
             GenerativeModel(
                 modelName = "gemini-2.5-flash",
-                apiKey = "AIzaSyDshuj5OTDcBv8QTV6VFoo9C_3McyQvKs8"
+                apiKey = "AIzaSyAeSHrnFdT2nJtFhAAup0PWT6h-BCo4Y94"
             )
         }
         catch (e: Exception) {
@@ -109,7 +109,7 @@ fun GeminiChatScreen(
             OutlinedTextField(
                 value = inputState.method,
                 onValueChange = { inputState = inputState.copy(method = it) },
-                label = { Text("Enter the cooking method") },
+                label = { Text("Enter the cooking method (ex. 볶는다, 끓인다.)") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             )

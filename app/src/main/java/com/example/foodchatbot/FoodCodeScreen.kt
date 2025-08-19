@@ -49,7 +49,7 @@ fun FoodCodeScreen(
         try {
             GenerativeModel(
                 modelName = "gemini-2.5-flash",
-                apiKey = "AIzaSyDshuj5OTDcBv8QTV6VFoo9C_3McyQvKs8"
+                apiKey = "AIzaSyAeSHrnFdT2nJtFhAAup0PWT6h-BCo4Y94"
             )
         } catch (e: Exception) {
             errorMessage = "API configuration error: ${e.message}"
@@ -110,7 +110,6 @@ fun FoodCodeScreen(
                 }
             }
         }
-        // "Go Back" button at the top
         Button(
             onClick = onBack,
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)

@@ -1,5 +1,10 @@
 package com.example.foodchatbot
 
+import android.graphics.Bitmap
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.navigation.ActivityNavigatorExtras
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -39,7 +46,8 @@ data class FoodInputState(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GeminiChatScreen(
-    onNavigateToFoodCodeScreen: (List<FoodItem>) -> Unit
+    onNavigateToFoodCodeScreen: (List<FoodItem>) -> Unit,
+    onPhotoTaken: (Bitmap?) -> Unit
 ) {
     var inputState by remember { mutableStateOf(FoodInputState()) }
     var responseText by remember { mutableStateOf("Gemini's response will appear here.") }
@@ -69,7 +77,7 @@ fun GeminiChatScreen(
         try {
             GenerativeModel(
                 modelName = "gemini-2.5-flash",
-                apiKey = "AIzaSyAeSHrnFdT2nJtFhAAup0PWT6h-BCo4Y94"
+                apiKey = "AIzaSyAWb-u5X8FyEuj3_jYA7tmpKiphVaUH0Us"
             )
         }
         catch (e: Exception) {
@@ -77,6 +85,91 @@ fun GeminiChatScreen(
             null
         }
     }
+
+    val takePhotoLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { photoBitmap ->
+            onPhotoTaken(photoBitmap)
+            if (photoBitmap != null) {
+                if (inputState.name.isBlank()) {
+                    errorMessage = "Please enter a food name"
+                    isLoading = false
+                    return@rememberLauncherForActivityResult
+                }
+                if (generativeModel == null) {
+                    errorMessage = "API not configured properly"
+                    isLoading = false
+                    return@rememberLauncherForActivityResult
+                }
+
+                coroutineScope.launch {
+                    try {
+                        val fullPrompt = """
+                            음식 이름: ${inputState.name}
+                            주재료/부재료: ${inputState.ingredients}
+                            조리법: ${inputState.method}
+                            양념장/소스: ${inputState.sauces}
+                            
+                            이 음식 정보를 바탕으로, 이 식품에 들어가 있는 재료들의 농진청식품코드를 모두 다 적어주세요.
+                            응답은 반드시 다음과 같은 JSON 형식의 배열로만 제공해야 합니다. 다른 텍스트, 설명, 또는 마크다운 형식(예: ```json)을 절대 포함하지 마세요.
+                            
+                            예시:
+                            [
+                                {
+                                    "food_name": "고춧가루",
+                                    "food_code": "R0070000005a"
+                                },
+                                {
+                                    "food_name": "소금",
+                                    "food_code": "R0200000009a"
+                                }
+                            ]
+                            
+                            다음은 참고용으로 제공된 식품 코드 데이터입니다:
+                            $csvContent
+                        """.trimIndent()
+
+                        val response = generativeModel.generateContent(fullPrompt)
+                        val rawText = response.text ?: "[]"
+                        val cleanedJsonText = rawText.trim()
+
+                        val jsonArray = JSONArray(cleanedJsonText)
+                        val foodItems = mutableListOf<FoodItem>()
+                        for (i in 0 until jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            foodItems.add(
+                                FoodItem(
+                                    foodName = jsonObject.getString("food_name"),
+                                    foodCode = jsonObject.getString("food_code")
+                                )
+                            )
+                        }
+                        onNavigateToFoodCodeScreen(foodItems)
+                    } catch (e: Exception) {
+                        errorMessage = "Error: ${e.message}"
+                        e.printStackTrace()
+                    } finally {
+                        isLoading = false
+                    }
+                }
+            } else {
+                isLoading = false
+            }
+        }
+    )
+
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted: Boolean ->
+            if (isGranted) {
+                takePhotoLauncher.launch(null)
+            }
+            else {
+                errorMessage = "Camera permission is required to take a photo."
+                isLoading = false
+            }
+        }
+    )
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -137,74 +230,16 @@ fun GeminiChatScreen(
 
         Button(
             onClick = {
-                if (inputState.name.isBlank()) {
-                    errorMessage = "Please enter a food name"
-                    return@Button
-                }
-                if (generativeModel == null) {
-                    errorMessage = "API not configured properly"
-                    return@Button
-                }
-
                 isLoading = true
-                errorMessage = null
-                responseText = "Generating response..."
-
-                coroutineScope.launch {
-                    try {
-                        val fullPrompt = """
-                            음식 이름: ${inputState.name}
-                            주재료/부재료: ${inputState.ingredients}
-                            조리법: ${inputState.method}
-                            양념장/소스: ${inputState.sauces}
-                            
-                            이 음식 정보를 바탕으로, 이 식품에 들어가 있는 재료들의 농진청식품코드를 모두 다 적어주세요.
-                            응답은 반드시 다음과 같은 JSON 형식의 배열로만 제공해야 합니다. 다른 텍스트, 설명, 또는 마크다운 형식(예: ```json)을 절대 포함하지 마세요.
-                            
-                            예시:
-                            [
-                                {
-                                    "food_name": "고춧가루",
-                                    "food_code": "R0070000005a"
-                                },
-                                {
-                                    "food_name": "소금",
-                                    "food_code": "R0200000009a"
-                                }
-                            ]
-                            
-                            다음은 참고용으로 제공된 식품 코드 데이터입니다:
-                            $csvContent
-                        """.trimIndent()
-
-                        val response = generativeModel.generateContent(fullPrompt)
-                        val rawText = response.text ?: "[]"
-                        val cleanedJsonText = rawText.trim()
-
-                        val jsonArray = JSONArray(cleanedJsonText)
-                        val foodItems = mutableListOf<FoodItem>()
-                        for (i in 0 until jsonArray.length()) {
-                            val jsonObject = jsonArray.getJSONObject(i)
-                            foodItems.add(
-                                FoodItem(
-                                    foodName = jsonObject.getString("food_name"),
-                                    foodCode = jsonObject.getString("food_code")
-                                )
-                            )
-                        }
-                        onNavigateToFoodCodeScreen(foodItems)
-                    } catch (e: Exception) {
-                        errorMessage = "Error: ${e.message}"
-                        e.printStackTrace()
-                    } finally {
-                        isLoading = false
-                    }
+                val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                    takePhotoLauncher.launch(null)
+                } else {
+                    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
                 }
             },
             enabled = !isLoading,
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .height(50.dp),
+            modifier = Modifier.fillMaxWidth(0.8f).height(50.dp),
             shape = RoundedCornerShape(25.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,

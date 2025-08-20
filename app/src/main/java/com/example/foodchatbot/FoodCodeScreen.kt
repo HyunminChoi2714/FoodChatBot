@@ -1,13 +1,16 @@
 package com.example.foodchatbot
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -365,6 +368,7 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
 @Composable
 fun FoodCodeScreen(
     foodItems: List<FoodItem>,
+    takenPhoto: Bitmap?,
     onBack: () -> Unit
 ) {
     var foodItemsState by remember { mutableStateOf(foodItems) }
@@ -415,6 +419,13 @@ fun FoodCodeScreen(
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
+        if (takenPhoto != null) {
+            Image(
+                bitmap = takenPhoto.asImageBitmap(),
+                contentDescription = "Taken photo of food",
+                modifier = Modifier.fillMaxWidth().height(200.dp).padding(bottom = 16.dp)
+            )
+        }
         Button(
             onClick = onBack,
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)

@@ -1,5 +1,6 @@
 package com.example.foodchatbot
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 // Shared state between screens
                 var foodItemsState by remember { mutableStateOf(emptyList<FoodItem>()) }
+                var takenPhoto by remember { mutableStateOf<Bitmap?>(null) }
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -33,16 +35,21 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToFoodCodeScreen = { foodItems ->
                                     foodItemsState = foodItems
                                     navController.navigate("food_code_screen")
+                                },
+                                onPhotoTaken = { photo ->
+                                    takenPhoto = photo
                                 }
                             )
                         }
                         composable("food_code_screen") {
                             FoodCodeScreen(
                                 foodItems = foodItemsState,
+                                takenPhoto = takenPhoto,
                                 onBack = {
                                     navController.popBackStack()
                                     // Clear the state when going back to the chat screen
                                     foodItemsState = emptyList()
+                                    takenPhoto = null
                                 }
                             )
                         }

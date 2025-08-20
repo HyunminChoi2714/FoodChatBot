@@ -1,35 +1,33 @@
 package com.example.foodchatbot
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.layout.*
+import android.graphics.Bitmap // 비트맵 이미지 처리를 위한 클래스를 임포트합니다. (Imports the class for handling Bitmap images.)
+import androidx.compose.foundation.layout.* // Compose에서 레이아웃을 구성하기 위한 클래스들을 임포트합니다. (Imports classes for structuring the layout in Compose.)
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.google.ai.client.generativeai.GenerativeModel
-import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
+import androidx.compose.foundation.lazy.items // LazyColumn과 그 항목들을 임포트합니다. 리스트를 효율적으로 표시하기 위한 Composable입니다. (Imports LazyColumn and its items. This is a Composable for efficiently displaying lists.)
+import androidx.compose.foundation.Image // Compose에서 이미지를 표시하기 위한 클래스를 임포트합니다. (Imports the class for displaying an image in Compose.)
+import androidx.compose.material3.* // Material3 디자인 시스템에서 UI 컴포넌트들을 임포트합니다. (Imports UI components from the Material3 design system.)
+import androidx.compose.runtime.* // Compose에서 상태를 관리하기 위한 런타임 관련 함수들을 임포트합니다. (Imports runtime-related functions for managing state in Compose.)
+import androidx.compose.ui.graphics.Color // 색상을 다루기 위한 Color 클래스를 임포트합니다. (Imports the Color class for handling colors.)
+import androidx.compose.ui.graphics.asImageBitmap // 비트맵을 ImageBitmap으로 변환하기 위한 확장 함수를 임포트합니다. (Imports the extension function for converting a Bitmap to an ImageBitmap.)
+import androidx.compose.ui.Modifier // UI 요소를 수정하기 위한 Modifier 클래스를 임포트합니다. (Imports the Modifier class for modifying UI elements.)
+import androidx.compose.ui.platform.LocalContext // Composable 내에서 현재 Context를 얻기 위한 함수를 임포트합니다. (Imports the function to get the current Context within a Composable.)
+import androidx.compose.ui.text.font.FontWeight // 폰트 두께를 설정하기 위한 FontWeight 클래스를 임포트합니다. (Imports the FontWeight class for setting font thickness.)
+import androidx.compose.ui.unit.dp // Compose에서 UI 요소의 크기를 정의하기 위한 단위를 임포트합니다. (Imports units for defining the size of UI elements in Compose.)
+import com.google.ai.client.generativeai.GenerativeModel // Google Generative AI 클라이언트 라이브러리에서 GenerativeModel 클래스를 임포트합니다. (Imports the GenerativeModel class from the Google Generative AI client library.)
+import kotlinx.coroutines.launch // 코루틴 스코프 내에서 비동기 작업을 시작하기 위한 launch 함수를 임포트합니다. (Imports the launch function to start an asynchronous task within a coroutine scope.)
+import java.io.BufferedReader // 파일을 읽기 위한 BufferedReader 클래스를 임포트합니다. (Imports the BufferedReader class for reading files.)
+import java.io.InputStreamReader // InputStream으로부터 데이터를 읽기 위한 InputStreamReader 클래스를 임포트합니다. (Imports the InputStreamReader class for reading data from an InputStream.)
+import java.nio.charset.StandardCharsets // 문자 인코딩을 위한 StandardCharsets 클래스를 임포트합니다. (Imports the StandardCharsets class for character encoding.)
 
-data class DynamicInputInfo(
-    val label: String = "",
-    val value: String = "",
-    val label2: String = "",
-    val value2: String = ""
+data class DynamicInputInfo( // 사용자에게 필요한 추가 입력을 저장하기 위한 데이터 클래스를 정의합니다. (Defines a data class to hold additional input required from the user.)
+    val label: String = "", // 첫 번째 입력 필드의 라벨입니다. (The label for the first input field.)
+    val value: String = "", // 첫 번째 입력 필드의 값입니다. (The value for the first input field.)
+    val label2: String = "", // 두 번째 입력 필드의 라벨입니다. (The label for the second input field.)
+    val value2: String = "" // 두 번째 입력 필드의 값입니다. (The value for the second input field.)
 )
 
 private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInputInfo? {
     val foodDetail = foodItems.mapNotNull { it.geminiResponse }
-
     return when {
         foodDetail.any { it.contains("낱알류") } ->
             DynamicInputInfo(
@@ -38,7 +36,6 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label2 = "곡물을 불렸는지, 끓였는지의 여부를 입력하세요.",
                 value2 = ""
             )
-
         // 면 종류 선택에 따른 수정 필요
         foodDetail.any { it.contains("면류 및 밀가공품") } ->
             DynamicInputInfo(
@@ -359,133 +356,125 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label = "",
                 value = ""
             )
-
         else -> null
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class) // ExperimentalMaterial3Api를 사용하여 Material3의 실험적 API를 사용할 수 있도록 합니다. (Uses ExperimentalMaterial3Api to enable the use of experimental APIs from Material3.)
 @Composable
-fun FoodCodeScreen(
-    foodItems: List<FoodItem>,
-    takenPhoto: Bitmap?,
-    onBack: () -> Unit
+fun FoodCodeScreen( // FoodCodeScreen Composable 함수를 정의합니다. (Defines the FoodCodeScreen Composable function.)
+    foodItems: List<FoodItem>, // 이전 화면에서 전달된 FoodItem 목록입니다. (The list of FoodItems passed from the previous screen.)
+    takenPhoto: Bitmap?, // 이전 화면에서 촬영된 비트맵 사진입니다. (The Bitmap photo taken on the previous screen.)
+    onBack: () -> Unit // 뒤로 가기 버튼을 눌렀을 때 실행되는 람다 함수입니다. (A lambda function that is executed when the back button is pressed.)
 ) {
-    var foodItemsState by remember { mutableStateOf(foodItems) }
-    var selectedFoodItem by remember { mutableStateOf<FoodItem?>(null) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
-    var isLoadingButton by remember { mutableStateOf(false) }
+    var foodItemsState by remember { mutableStateOf(foodItems) } // foodItems의 상태를 저장하는 mutableStateOf 변수입니다. (A mutableStateOf variable to store the state of foodItems.)
+    var selectedFoodItem by remember { mutableStateOf<FoodItem?>(null) } // 현재 선택된 FoodItem을 저장하는 nullable mutableStateOf 변수입니다. (A nullable mutableStateOf variable to store the currently selected FoodItem.)
+    var errorMessage by remember { mutableStateOf<String?>(null) } // 에러 메시지를 저장하는 nullable mutableStateOf 변수입니다. (A nullable mutableStateOf variable to store error messages.)
+    var isLoadingButton by remember { mutableStateOf(false) } // 버튼의 로딩 상태를 저장하는 mutableStateOf 변수입니다. (A mutableStateOf variable to store the loading state of the button.)
 
-    var dynamicInputForCode by remember { mutableStateOf<String?>(null) }
-    var dynamicInputInfo by remember { mutableStateOf<DynamicInputInfo?>(null) }
+    var dynamicInputForCode by remember { mutableStateOf<String?>(null) }  // 다이나믹 입력이 필요한 FoodItem 코드를 저장하는 nullable mutableStateOf 변수입니다. (A nullable mutableStateOf variable to store the FoodItem code that requires dynamic input.)
+    var dynamicInputInfo by remember { mutableStateOf<DynamicInputInfo?>(null) } // 다이나믹 입력 필드의 정보를 저장하는 nullable mutableStateOf 변수입니다. (A nullable mutableStateOf variable to store the information for dynamic input fields.)
 
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope() // 코루틴 스코프를 생성하고 기억합니다. (Creates and remembers a coroutine scope.)
+    val context = LocalContext.current // 현재 Composable의 컨텍스트를 얻습니다. (Gets the context of the current Composable.)
 
-    // Read the CSV file once
-    var csvContent2 by remember { mutableStateOf("") }
-    LaunchedEffect(Unit) {
+    var csvContent2 by remember { mutableStateOf("") } // CSV 파일의 내용을 저장하는 mutableStateOf 변수입니다. (A mutableStateOf variable to store the content of the CSV file.)
+    LaunchedEffect(Unit) { // 컴포저블이 처음 실행될 때만 실행되는 블록입니다. (A block that runs only when the composable is first launched.)
         try {
-            context.assets.open("foodclassification.csv").use { inputStream ->
-                BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8)).use { reader ->
-                    csvContent2 = reader.readText()
+            context.assets.open("foodclassification.csv").use { inputStream -> // assets 폴더에서 "foodclassification.csv" 파일을 엽니다. (Opens the "foodclassification.csv" file from the assets folder.)
+                BufferedReader(InputStreamReader(inputStream, StandardCharsets.UTF_8)).use { reader -> // UTF-8 인코딩으로 InputStream을 읽기 위한 BufferedReader를 생성합니다. (Creates a BufferedReader to read the InputStream with UTF-8 encoding.)
+                    csvContent2 = reader.readText() // 파일의 모든 텍스트를 읽어 csvContent2 변수에 저장합니다. (Reads all the text from the file and stores it in the csvContent2 variable.)
                 }
             }
         } catch (e: Exception) {
-            errorMessage = "Error reading foodcode.csv: ${e.message}"
+            errorMessage = "Error reading foodcode.csv: ${e.message}" // 파일 읽기 중 에러가 발생하면 에러 메시지를 설정하고 스택 트레이스를 출력합니다. (If an error occurs while reading the file, set the error message and print the stack trace.)
             e.printStackTrace()
         }
     }
 
-    val generativeModel = remember {
+    val generativeModel = remember { // Gemini 모델 인스턴스를 생성하고 기억합니다. (Creates and remembers a Gemini model instance.)
         try {
             GenerativeModel(
                 modelName = "gemini-2.5-flash",
                 apiKey = "AIzaSyAeSHrnFdT2nJtFhAAup0PWT6h-BCo4Y94"
-            )
+            ) // "gemini-2.5-flash" 모델과 API 키를 사용하여 GenerativeModel을 초기화합니다. (Initializes the GenerativeModel with the "gemini-2.5-flash" model and API key.)
         } catch (e: Exception) {
-            errorMessage = "API configuration error: ${e.message}"
+            errorMessage = "API configuration error: ${e.message}" // API 구성 중 에러가 발생하면 에러 메시지를 설정하고 null을 반환합니다. (If an error occurs during API configuration, set the error message and return null.)
             null
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) { // 컴포저블이 처음 실행될 때 다이나믹 입력 정보가 필요한지 확인합니다. (Checks if dynamic input information is required when the composable is first launched.)
         val requiredInput = getDynamicInputForFoodItems(foodItemsState)
         if (requiredInput != null) {
-            dynamicInputInfo = requiredInput
+            dynamicInputInfo = requiredInput // 필요하면 dynamicInputInfo를 업데이트합니다. (If required, updates the dynamicInputInfo.)
         }
     }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
-    ) {
+    ) { // UI 레이아웃을 정의하는 Column 컴포저블입니다. (A Column composable that defines the UI layout.)
         if (takenPhoto != null) {
             Image(
                 bitmap = takenPhoto.asImageBitmap(),
                 contentDescription = "Taken photo of food",
                 modifier = Modifier.fillMaxWidth().height(200.dp).padding(bottom = 16.dp)
-            )
+            ) // takenPhoto가 null이 아니면 이미지를 표시합니다. (If takenPhoto is not null, displays the image.)
         }
         Button(
             onClick = onBack,
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
         ) {
             Text("Go Back")
-        }
+        } // 뒤로 가기 버튼입니다. (The "Go Back" button.)
 
-        // Display the list of food code buttons
         LazyColumn(
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(foodItemsState, key = { it.foodCode }) { item ->
-                val isSelected = (selectedFoodItem?.foodCode == item.foodCode)
+        ) { // 식품 코드 버튼 목록을 효율적으로 표시하는 LazyColumn입니다. (A LazyColumn that efficiently displays the list of food code buttons.)
+            items(foodItemsState, key = { it.foodCode }) { item -> // foodItemsState의 각 항목에 대해 반복하여 UI를 생성합니다. (Iterates over each item in foodItemsState to generate UI.)
+                val isSelected = (selectedFoodItem?.foodCode == item.foodCode) // 현재 항목이 선택되었는지 확인합니다. (Checks if the current item is selected.)
+                val showDynamicInput = dynamicInputForCode == item.foodCode && dynamicInputInfo != null // 이 항목에 다이나믹 입력 양식을 표시해야 하는지 결정합니다. (Determines if this item should show the dynamic input form.)
 
-                // Determine if this item should show the dynamic input form
-                val showDynamicInput = dynamicInputForCode == item.foodCode && dynamicInputInfo != null
-
-                Card(
+                Card( // 각 FoodItem에 대한 클릭 가능한 Card입니다. (A clickable Card for each FoodItem.)
                     onClick = {
                         if (isSelected && !showDynamicInput) {
                             selectedFoodItem = null
                             dynamicInputForCode = null
-                            dynamicInputInfo = null
+                            dynamicInputInfo = null // 선택된 항목이 이미 선택되었고 다이나믹 입력이 표시되지 않으면 선택을 해제합니다. (If the selected item is already selected and dynamic input is not shown, unselect it.)
                         } else if (!isLoadingButton) {
                             selectedFoodItem = item
-                            isLoadingButton = true
+                            isLoadingButton = true // 버튼이 로딩 중이 아니면 항목을 선택하고 로딩을 시작합니다. (If the button is not loading, select the item and start loading.)
 
-                            // Make the API call to get the category detail
-                            coroutineScope.launch {
+                            coroutineScope.launch { // 카테고리 세부 정보를 가져오기 위해 API 호출을 합니다. (Makes an API call to get the category detail.)
                                 try {
                                     val newPrompt = """
                                         음식 이름: ${item.foodName}
                                         
                                         $csvContent2
                                         위에 제공된 데이터를 바탕으로, 음식의 이름을 **반드시** **항목에 있는 내용 그대로**만 분류해서 출력해줘.
-                                    """.trimIndent()
+                                    """.trimIndent() // Gemini API에 보낼 새 프롬프트를 구성합니다. (Constructs a new prompt to be sent to the Gemini API.)
                                     val geminiResponse = generativeModel?.generateContent(newPrompt)
 
-                                    // Update the item's geminiResponse
                                     val updatedList = foodItemsState.map {
                                         if (it.foodCode == item.foodCode) {
-                                            it.copy(geminiResponse = geminiResponse?.text)
+                                            it.copy(geminiResponse = geminiResponse?.text) // 항목의 geminiResponse를 업데이트합니다. (Updates the item's geminiResponse.)
                                         } else {
                                             it
                                         }
                                     }
                                     foodItemsState = updatedList
 
-                                    // Check if this item requires dynamic input and set state accordingly
-                                    val requiredInput = getDynamicInputForFoodItems(listOf(updatedList.find { it.foodCode == item.foodCode }!!))
+                                    val requiredInput = getDynamicInputForFoodItems(listOf(updatedList.find { it.foodCode == item.foodCode }!!)) // 이 항목에 다이나믹 입력이 필요한지 확인하고 그에 따라 상태를 설정합니다. (Checks if this item requires dynamic input and sets the state accordingly.)
                                     if (requiredInput != null) {
                                         dynamicInputForCode = item.foodCode
                                         dynamicInputInfo = requiredInput
                                     }
 
                                 } catch (e: Exception) {
-                                    errorMessage = "Error fetching details: ${e.message}"
+                                    errorMessage = "Error fetching details: ${e.message}" // 예외가 발생하면 에러 메시지를 설정합니다. (If an exception occurs, set the error message.)
                                 } finally {
-                                    isLoadingButton = false
+                                    isLoadingButton = false // 작업이 완료되면 로딩 상태를 false로 설정합니다. (When the task is complete, set the loading state to false.)
                                 }
                             }
                         }
@@ -494,16 +483,14 @@ fun FoodCodeScreen(
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(item.foodName, fontWeight = FontWeight.Bold)
-                        Text(item.foodCode, color = Color.Gray)
+                        Text(item.foodCode, color = Color.Gray) // 식품 이름과 코드를 표시합니다. (Displays the food name and code.)
 
-                        // Conditional display based on state
-                        if (isSelected) {
+                        if (isSelected) { // 상태에 따라 조건부로 표시합니다. (Conditionally displays based on the state.)
                             Spacer(modifier = Modifier.height(8.dp))
                             if (isLoadingButton) {
                                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                                Text("Loading details...")
+                                Text("Loading details...") // 로딩 중이면 진행 표시기를 표시합니다. (If loading, display a progress indicator.)
                             } else if (showDynamicInput) {
-                                // Show the dynamic input form
                                 Text(item.geminiResponse ?: "No details found.", color = Color.Gray)
                                 OutlinedTextField(
                                     value = dynamicInputInfo!!.value,
@@ -512,7 +499,7 @@ fun FoodCodeScreen(
                                     },
                                     label = { Text(dynamicInputInfo!!.label) },
                                     modifier = Modifier.fillMaxWidth()
-                                )
+                                ) // 다이나믹 입력 양식을 표시합니다. (Displays the dynamic input form.)
                                 if (dynamicInputInfo!!.label2 != "") {
                                     OutlinedTextField(
                                         value = dynamicInputInfo!!.value2,
@@ -521,21 +508,22 @@ fun FoodCodeScreen(
                                         },
                                         label = { Text(dynamicInputInfo!!.label2) },
                                         modifier = Modifier.fillMaxWidth()
-                                    )
+                                    ) // 두 번째 입력 필드가 필요하면 표시합니다. (If a second input field is needed, display it.)
                                 }
                                 Button(
                                     onClick = {
-                                        // Handle the submission of dynamic input
-                                        // e.g., Make a second API call, then reset dynamicInputForCode to null
+                                        // 다이나믹 입력 제출을 처리하는 로직입니다.
+                                        // Logic to handle the submission of dynamic input.
+                                        // 예: 두 번째 API 호출을 하고 dynamicInputForCode를 null로 재설정합니다.
+                                        // e.g., Make a second API call, then reset dynamicInputForCode to null.
                                     },
                                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
                                 ) {
                                     Text("Submit")
-                                }
+                                } // 제출 버튼입니다. (The submit button.)
                             } else {
-                                // Show the Gemini response text
                                 Text(item.geminiResponse ?: "No details found.")
-                            }
+                            } // Gemini 응답 텍스트를 표시합니다. (Displays the Gemini response text.)
                         }
                     }
                 }

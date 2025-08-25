@@ -156,8 +156,7 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
         foodDetail.any { it.contains("양송이버섯") } ->
             DynamicInputInfo(
                 label = "",
-                value = "",
-                imageResId = R.drawable.
+                value = ""
             )
 
         foodDetail.any { it.contains("느타리버섯") } ->

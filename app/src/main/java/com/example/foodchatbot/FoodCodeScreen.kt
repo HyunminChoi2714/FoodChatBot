@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color // 색상을 다루기 위한 Color �
 import androidx.compose.ui.graphics.asImageBitmap // 비트맵을 ImageBitmap으로 변환하기 위한 확장 함수를 임포트합니다. (Imports the extension function for converting a Bitmap to an ImageBitmap.)
 import androidx.compose.ui.Modifier // UI 요소를 수정하기 위한 Modifier 클래스를 임포트합니다. (Imports the Modifier class for modifying UI elements.)
 import androidx.compose.ui.platform.LocalContext // Composable 내에서 현재 Context를 얻기 위한 함수를 임포트합니다. (Imports the function to get the current Context within a Composable.)
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight // 폰트 두께를 설정하기 위한 FontWeight 클래스를 임포트합니다. (Imports the FontWeight class for setting font thickness.)
 import androidx.compose.ui.unit.dp // Compose에서 UI 요소의 크기를 정의하기 위한 단위를 임포트합니다. (Imports units for defining the size of UI elements in Compose.)
 import com.google.ai.client.generativeai.GenerativeModel // Google Generative AI 클라이언트 라이브러리에서 GenerativeModel 클래스를 임포트합니다. (Imports the GenerativeModel class from the Google Generative AI client library.)
@@ -23,7 +24,8 @@ data class DynamicInputInfo( // 사용자에게 필요한 추가 입력을 저�
     val label: String = "", // 첫 번째 입력 필드의 라벨입니다. (The label for the first input field.)
     val value: String = "", // 첫 번째 입력 필드의 값입니다. (The value for the first input field.)
     val label2: String = "", // 두 번째 입력 필드의 라벨입니다. (The label for the second input field.)
-    val value2: String = "" // 두 번째 입력 필드의 값입니다. (The value for the second input field.)
+    val value2: String = "", // 두 번째 입력 필드의 값입니다. (The value for the second input field.)
+    val imageResId: Int? = null
 )
 
 private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInputInfo? {
@@ -34,7 +36,8 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label = "사용한 곡물의 양을 mL 단위로 입력하세요.",
                 value = "",
                 label2 = "곡물을 불렸는지, 끓였는지의 여부를 입력하세요.",
-                value2 = ""
+                value2 = "",
+                imageResId = R.drawable.낱알류
             )
         // 면 종류 선택에 따른 수정 필요
         foodDetail.any { it.contains("면류 및 밀가공품") } ->
@@ -42,43 +45,50 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label = "사용한 면이 생면인지, 삶은 면인지, 마른 면인지, 인스턴트 면인지 고르시오.",
                 value = "",
                 label2 = "면의 중량을 확인하여 그램 단위로 기록하세요.",
-                value2 = ""
+                value2 = "",
+                imageResId = R.drawable.면류_및_밀가공품
             )
 
         foodDetail.any { it.contains("빵, 떡") } ->
             DynamicInputInfo(
                 label = "빵이나 떡의 가로, 세로, 높이를 cm 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.빵떡
             )
 
         foodDetail.any { it.contains("시리얼류") } ->
             DynamicInputInfo(
                 label = "시리얼의 부피를 mL 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.시리얼류
             )
 
         foodDetail.any { it.contains("묵, 두부") } ->
             DynamicInputInfo(
                 label = "묵이나 두부의 가로, 세로, 높이를 cm 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.두부
             )
 
         foodDetail.any { it.contains("옥수수") } ->
             DynamicInputInfo(
                 label = "옥수수 알갱이들의 부피를 mL 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.옥수수
             )
 
         foodDetail.any { it.contains("만두, 바람떡") } ->
             DynamicInputInfo(
                 label = "만두나 바람떡을 반원기둥으로 생각해서 반지름과 높이를 각각 cm 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.바람떡
             )
 
         foodDetail.any { it.contains("양배추, 양상추") } ->
             DynamicInputInfo(
                 label = "양배추나 양상추를 구로 취급했을 때 그 반지름을 cm 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.양상추
             )
 
         foodDetail.any { it.contains("통마늘") } ->
@@ -86,7 +96,8 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label = "통마늘의 갯수를 입력하세요.",
                 value = "",
                 label2 = "통마늘을 원기둥으로 취급하여 그 반지름과 높이를 cm 단위로 입력하세요.",
-                value2 = ""
+                value2 = "",
+                imageResId = R.drawable.통마늘
             )
 
         foodDetail.any { it.contains("편마늘") } ->
@@ -94,19 +105,22 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label = "편마늘이 총 몇 조각인지 갯수를 입력하세요.",
                 value = "",
                 label2 = "각 편마늘의 밑바닥 면적과 두께를 각각 cm^2과 cm 단위로 입력하세요.",
-                value2 = ""
+                value2 = "",
+                imageResId = R.drawable.편마늘
             )
 
         foodDetail.any { it.contains("생강, 마늘") } ->
             DynamicInputInfo(
                 label = "다진 마늘을 넣은 양을 그램 단위로 입력하세요.",
-                value = ""
+                value = "",
+                imageResId = R.drawable.생강마늘
             )
 
         foodDetail.any { it.contains("상추, 깻잎") } ->
             DynamicInputInfo(
                 label = "낱장으로 ",
-                value = ""
+                value = "",
+                imageResId = R.drawable.상추
             )
 
         foodDetail.any { it.contains("구형") } ->
@@ -114,31 +128,36 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 label = "",
                 value = "",
                 label2 = "",
-                value2 = ""
+                value2 = "",
+                imageResId = R.drawable.구형양파
             )
 
         foodDetail.any { it.contains("쑥갓") } ->
             DynamicInputInfo(
                 label = "",
-                value = ""
+                value = "",
+                imageResId = R.drawable.쑥갓
             )
 
         foodDetail.any { it.contains("삶은 것") } ->
             DynamicInputInfo(
                 label = "",
-                value = ""
+                value = "",
+                imageResId = R.drawable.삶은채소
             )
 
         foodDetail.any { it.contains("김치류") } ->
             DynamicInputInfo(
                 label = "",
-                value = ""
+                value = "",
+                imageResId = R.drawable.김치
             )
 
         foodDetail.any { it.contains("양송이버섯") } ->
             DynamicInputInfo(
                 label = "",
-                value = ""
+                value = "",
+                imageResId = R.drawable.
             )
 
         foodDetail.any { it.contains("느타리버섯") } ->
@@ -492,6 +511,15 @@ fun FoodCodeScreen( // FoodCodeScreen Composable 함수를 정의합니다. (Def
                                 Text("Loading details...") // 로딩 중이면 진행 표시기를 표시합니다. (If loading, display a progress indicator.)
                             } else if (showDynamicInput) {
                                 Text(item.geminiResponse ?: "No details found.", color = Color.Gray)
+
+                                dynamicInputInfo?.imageResId?.let { resId ->
+                                    Image(
+                                        painter = painterResource(id = resId),
+                                        contentDescription = "Food input example",
+                                        modifier = Modifier.fillMaxWidth().height(150.dp).padding(vertical = 16.dp)
+                                    )
+                                }
+
                                 OutlinedTextField(
                                     value = dynamicInputInfo!!.value,
                                     onValueChange = { newValue ->

@@ -37,7 +37,7 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 value = "",
                 label2 = "곡물을 불렸는지, 끓였는지의 여부를 입력하세요.",
                 value2 = "",
-                imageResId = R.drawable.낱알류
+                imageResId = R.drawable.grain
             )
         // 면 종류 선택에 따른 수정 필요
         foodDetail.any { it.contains("면류 및 밀가공품") } ->
@@ -46,49 +46,49 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 value = "",
                 label2 = "면의 중량을 확인하여 그램 단위로 기록하세요.",
                 value2 = "",
-                imageResId = R.drawable.면류_및_밀가공품
+                imageResId = R.drawable.noodles_wheat_product
             )
 
         foodDetail.any { it.contains("빵, 떡") } ->
             DynamicInputInfo(
                 label = "빵이나 떡의 가로, 세로, 높이를 cm 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.빵떡
+                imageResId = R.drawable.bread_rice_cake
             )
 
         foodDetail.any { it.contains("시리얼류") } ->
             DynamicInputInfo(
                 label = "시리얼의 부피를 mL 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.시리얼류
+                imageResId = R.drawable.cereal
             )
 
         foodDetail.any { it.contains("묵, 두부") } ->
             DynamicInputInfo(
                 label = "묵이나 두부의 가로, 세로, 높이를 cm 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.두부
+                imageResId = R.drawable.tofu
             )
 
         foodDetail.any { it.contains("옥수수") } ->
             DynamicInputInfo(
                 label = "옥수수 알갱이들의 부피를 mL 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.옥수수
+                imageResId = R.drawable.corn
             )
 
         foodDetail.any { it.contains("만두, 바람떡") } ->
             DynamicInputInfo(
                 label = "만두나 바람떡을 반원기둥으로 생각해서 반지름과 높이를 각각 cm 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.바람떡
+                imageResId = R.drawable.baramtteok
             )
 
         foodDetail.any { it.contains("양배추, 양상추") } ->
             DynamicInputInfo(
                 label = "양배추나 양상추를 구로 취급했을 때 그 반지름을 cm 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.양상추
+                imageResId = R.drawable.cabbage
             )
 
         foodDetail.any { it.contains("통마늘") } ->
@@ -97,7 +97,7 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 value = "",
                 label2 = "통마늘을 원기둥으로 취급하여 그 반지름과 높이를 cm 단위로 입력하세요.",
                 value2 = "",
-                imageResId = R.drawable.통마늘
+                imageResId = R.drawable.whole_garlic
             )
 
         foodDetail.any { it.contains("편마늘") } ->
@@ -106,21 +106,21 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 value = "",
                 label2 = "각 편마늘의 밑바닥 면적과 두께를 각각 cm^2과 cm 단위로 입력하세요.",
                 value2 = "",
-                imageResId = R.drawable.편마늘
+                imageResId = R.drawable.sliced_garlic
             )
 
-        foodDetail.any { it.contains("생강, 마늘") } ->
+        foodDetail.any { it.contains("마늘") or it.contains("생강") } ->
             DynamicInputInfo(
                 label = "다진 마늘을 넣은 양을 그램 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.생강마늘
+                imageResId = R.drawable.ginger_garlic
             )
 
         foodDetail.any { it.contains("상추, 깻잎") } ->
             DynamicInputInfo(
                 label = "낱장으로 ",
                 value = "",
-                imageResId = R.drawable.상추
+                imageResId = R.drawable.lettuce
             )
 
         foodDetail.any { it.contains("구형") } ->
@@ -129,287 +129,288 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
                 value = "",
                 label2 = "",
                 value2 = "",
-                imageResId = R.drawable.구형양파
+                imageResId = R.drawable.spherical_onion
             )
 
         foodDetail.any { it.contains("쑥갓") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.쑥갓
+                imageResId = R.drawable.mugwort
             )
 
         foodDetail.any { it.contains("삶은 것") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.삶은채소
+                imageResId = R.drawable.boiled_veggies
             )
 
         foodDetail.any { it.contains("김치류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.김치
+                imageResId = R.drawable.gimchi
             )
 
         foodDetail.any { it.contains("양송이버섯") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.양송이버섯
+                imageResId = R.drawable.button_mushroom
             )
 
         foodDetail.any { it.contains("느타리버섯") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.느타리버섯
+                imageResId = R.drawable.oyster_mushroom
             )
 
         foodDetail.any { it.contains("그 외 버섯류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.그외버섯류
+                imageResId = R.drawable.other_mushroom
             )
 
         foodDetail.any { it.contains("마른 김, 마른 다시마") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.마른김
+                imageResId = R.drawable.dried_seaweed
             )
 
         foodDetail.any { it.contains("파래, 미역줄기, 매생이") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.매생이
+                imageResId = R.drawable.maesaengi
             )
 
         foodDetail.any { it.contains("땅콩, 아몬드, 캐슈넛") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.땅콩
+                imageResId = R.drawable.peanut
             )
 
         foodDetail.any { it.contains("밤") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.밤_사진
+                imageResId = R.drawable.chestnut
             )
 
         foodDetail.any { it.contains("호두") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.호두
+                imageResId = R.drawable.chestnut
             )
 
         foodDetail.any { it.contains("믹스넛") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.믹스넛
+                imageResId = R.drawable.mixed_nuts
             )
 
         foodDetail.any { it.contains("구형 과일") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.구형과일
+                imageResId = R.drawable.spherical_fruit
             )
 
         foodDetail.any { it.contains("단감, 연시, 대봉, 참외, 키위") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.단감_연시_키위
+                imageResId = R.drawable.sweetpersimmon_kiwi
             )
 
         foodDetail.any { it.contains("바나나") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.바나나
+                imageResId = R.drawable.banana
             )
 
         foodDetail.any { it.contains("딸기, 대추") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.딸기_대추
+                imageResId = R.drawable.strawberry_jujube
             )
 
         foodDetail.any { it.contains("슬라이스 햄") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.슬라이스햄
+                imageResId = R.drawable.sliced_ham
             )
 
         foodDetail.any { it.contains("그 외 육류") } ->
             DynamicInputInfo(
                 label = "사용한 육류의 양을 그램 단위로 입력하세요.",
                 value = "",
-                imageResId = R.drawable.그_외_육류
+                imageResId = R.drawable.other_meat
             )
 
         foodDetail.any { it.contains("일반 어류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.일반_어류
+                imageResId = R.drawable.normal_fish
             )
 
         foodDetail.any { it.contains("멸치") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.멸치
+                imageResId = R.drawable.anchovy
             )
 
         foodDetail.any { it.contains("미꾸라지") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.미꾸라지
+                imageResId = R.drawable.loach
             )
 
         foodDetail.any { it.contains("게") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.게
+                imageResId = R.drawable.crab
             )
 
         foodDetail.any { it.contains("새우") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.새우
+                imageResId = R.drawable.shrimp
             )
 
         foodDetail.any { it.contains("조개 종류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.조개_종류
+                imageResId = R.drawable.types_of_clam
             )
 
         foodDetail.any { it.contains("가리비") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.가리비
+                imageResId = R.drawable.scallop
             )
 
         foodDetail.any { it.contains("바지락, 홍합, 미더덕, 멍게") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.바지락
+                imageResId = R.drawable.clam
             )
 
         foodDetail.any { it.contains("조개관자") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.조개관자
+                imageResId = R.drawable.clam_scallop
             )
 
         foodDetail.any { it.contains("밋조개") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.맛조개
+                imageResId = R.drawable.razor_clam
             )
 
         foodDetail.any { it.contains("오징어") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.오징어
+                imageResId = R.drawable.squid
             )
 
         foodDetail.any { it.contains("마른 오징어") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.마른_오징어
+                imageResId = R.drawable.dried_squid
             )
 
         foodDetail.any { it.contains("낙지") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.낙지
+                imageResId = R.drawable.nakji
             )
 
         foodDetail.any { it.contains("문어") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.문어
+                imageResId = R.drawable.octopus
             )
 
         foodDetail.any { it.contains("쥐포") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.쥐포
+                imageResId = R.drawable.dried_filefish
             )
 
         foodDetail.any { it.contains("채 형태와 자건품") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.자건품
+                imageResId = R.drawable.dried_goods
             )
 
         foodDetail.any { it.contains("명란젓") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.명란젓
+                imageResId = R.drawable.pollack_roe
             )
 
         foodDetail.any { it.contains("그 외의 젓갈류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.그_외_젓갈류
+                imageResId = R.drawable.other_jeotgal
             )
 
         foodDetail.any { it.contains("어묵") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.어묵
+                value2 = "",
+                imageResId = R.drawable.fish_cake
             )
 
         foodDetail.any { it.contains("난류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.난류
+                imageResId = R.drawable.egg
             )
 
         foodDetail.any { it.contains("조미료류") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.조미료류
+                imageResId = R.drawable.spices
             )
 
         foodDetail.any { it.contains("티백") } ->
             DynamicInputInfo(
                 label = "",
                 value = "",
-                imageResId = R.drawable.티백
+                imageResId = R.drawable.teabag
             )
         else -> null
     }
@@ -451,7 +452,7 @@ fun FoodCodeScreen( // FoodCodeScreen Composable 함수를 정의합니다. (Def
         try {
             GenerativeModel(
                 modelName = "gemini-2.5-flash",
-                apiKey = "AIzaSyAeSHrnFdT2nJtFhAAup0PWT6h-BCo4Y94"
+                apiKey = "AIzaSyAWb-u5X8FyEuj3_jYA7tmpKiphVaUH0Us"
             ) // "gemini-2.5-flash" 모델과 API 키를 사용하여 GenerativeModel을 초기화합니다. (Initializes the GenerativeModel with the "gemini-2.5-flash" model and API key.)
         } catch (e: Exception) {
             errorMessage = "API configuration error: ${e.message}" // API 구성 중 에러가 발생하면 에러 메시지를 설정하고 null을 반환합니다. (If an error occurs during API configuration, set the error message and return null.)

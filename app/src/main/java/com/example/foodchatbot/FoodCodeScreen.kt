@@ -118,136 +118,144 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
 
         foodDetail.any { it.contains("상추, 깻잎") } ->
             DynamicInputInfo(
-                label = "낱장으로 ",
+                label = "낱장으로 사용하신 경우, 섭취한 장수와 면적을 cm^2 단위로 입력하세요.",
                 value = "",
+                label2 = "다량으로 사용하신 경우, 부피를 mL 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.lettuce
             )
 
         foodDetail.any { it.contains("구형") } ->
             DynamicInputInfo(
-                label = "",
+                label = "원재료 형태로 사용하신 경우, 사용하신 구형 채소의 반지름을 입력하세요.",
                 value = "",
-                label2 = "",
+                label2 = "썰은 형태로 사용하신 경우, 부피를 mL 단위로 입력하세요.",
                 value2 = "",
                 imageResId = R.drawable.spherical_onion
             )
 
         foodDetail.any { it.contains("쑥갓") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 쑥갓의 길이를 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.mugwort
             )
 
         foodDetail.any { it.contains("삶은 것") } ->
             DynamicInputInfo(
-                label = "",
+                label = "물기를 제거한 상태의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.boiled_veggies
             )
 
         foodDetail.any { it.contains("김치류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 김치의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.gimchi
             )
 
         foodDetail.any { it.contains("양송이버섯") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 양송이버섯의 개수, 그리고 구로 취급했을 때 그 반지름을 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.button_mushroom
             )
 
         foodDetail.any { it.contains("느타리버섯") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 느타리버섯의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.oyster_mushroom
             )
 
         foodDetail.any { it.contains("그 외 버섯류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "버섯의 갓 부분을 반구로 취급하여 반지름을 cm 단위로 입력하세요.",
                 value = "",
+                label2 = "버섯의 기둥 부분을 원기둥으로 취급하여 반지름과 높이를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.other_mushroom
             )
 
         foodDetail.any { it.contains("마른 김, 마른 다시마") } ->
             DynamicInputInfo(
-                label = "",
+                label = "김의 가로와 세로 길이를 cm 단위로 각각 입력하세요.",
                 value = "",
                 imageResId = R.drawable.dried_seaweed
             )
 
         foodDetail.any { it.contains("파래, 미역줄기, 매생이") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.maesaengi
             )
 
         foodDetail.any { it.contains("땅콩, 아몬드, 캐슈넛") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 견과류의 개수를 입력하세요.",
                 value = "",
                 imageResId = R.drawable.peanut
             )
 
         foodDetail.any { it.contains("밤") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 밤의 개수, 그리고 한 알을 반구로 취급했을 때 그 반지름을 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.chestnut
             )
 
         foodDetail.any { it.contains("호두") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 호두의 개수, 그리고 한 알을 구로 취급했을 때 그 반지름을 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.chestnut
             )
 
         foodDetail.any { it.contains("믹스넛") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 믹스넛의 총 중량을 g 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.mixed_nuts
             )
 
         foodDetail.any { it.contains("구형 과일") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 과일의 개수, 그리고 과일을 구로 취급했을 때 그 반지름을 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.spherical_fruit
             )
 
         foodDetail.any { it.contains("단감, 연시, 대봉, 참외, 키위") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 과일을 원기둥으로 취급했을 때, 밑면의 반지름과 높이를 각각 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.sweetpersimmon_kiwi
             )
 
         foodDetail.any { it.contains("바나나") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 바나나의 개수, 그리고 바나나를 원기둥으로 취급했을 때 밑면의 반지름과 높이를 각각 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.banana
             )
 
         foodDetail.any { it.contains("딸기, 대추") } ->
             DynamicInputInfo(
-                label = "",
+                label = "낱개로 사용하신 경우, 개수와 원기둥으로 취급했을 때 밑면의 반지름과 높이를 각각 cm 단위로 입력하세요.",
                 value = "",
+                label2 = "다량으로 사용하신 경우, 부피를 mL 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.strawberry_jujube
             )
 
         foodDetail.any { it.contains("슬라이스 햄") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 슬라이스 햄의 개수를 입력하세요.",
                 value = "",
+                label2 = "슬라이스 햄의 가로와 세로를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.sliced_ham
             )
 
@@ -260,156 +268,177 @@ private fun getDynamicInputForFoodItems(foodItems: List<FoodItem>): DynamicInput
 
         foodDetail.any { it.contains("일반 어류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 마리 수를 입력하세요.",
                 value = "",
+                label2 = "생선을 직육면체로 취급하여 각각 가로, 세로, 그리고 높이를 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.normal_fish
             )
 
         foodDetail.any { it.contains("멸치") } ->
             DynamicInputInfo(
-                label = "",
+                label = "작은 멸치를 사용한 경우 용기에 담은 부피를 mL 단위로 입력하세요.",
                 value = "",
+                label2 = "대멸치를 사용한 경우 개수와 길이를 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.anchovy
             )
 
         foodDetail.any { it.contains("미꾸라지") } ->
             DynamicInputInfo(
-                label = "",
+                label = "용기에 담겨있는 경우 부피를 mL 단위로 입력하세요.",
                 value = "",
+                label2 = "부피를 측정하지 못한 경우 중량을 근 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.loach
             )
 
         foodDetail.any { it.contains("게") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 게의 마리 수를 입력하세요.",
                 value = "",
+                label2 = "게를 직육면체로 취급하여 가로, 세로, 그리고 높이를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.crab
             )
 
         foodDetail.any { it.contains("새우") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 새우의 마리 수를 입력하세요.",
                 value = "",
+                label2 = "새우를 원기둥으로 취급했을 때, 밑면의 반지름과 높이를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.shrimp
             )
 
         foodDetail.any { it.contains("조개 종류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 조개의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.types_of_clam
             )
 
         foodDetail.any { it.contains("가리비") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 가리비의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.scallop
             )
 
         foodDetail.any { it.contains("바지락, 홍합, 미더덕, 멍게") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 가식부의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.clam
             )
 
         foodDetail.any { it.contains("조개관자") } ->
             DynamicInputInfo(
-                label = "",
+                label = "관자를 원기둥으로 취급하여 밑면의 반지름과 높이를 각각 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.clam_scallop
             )
 
         foodDetail.any { it.contains("밋조개") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 맛조개의 개수를 입력하세요.",
                 value = "",
+                label2 = "맛조개를 직육면체로 취급했을 때, 가로와 세로, 높이를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.razor_clam
             )
 
         foodDetail.any { it.contains("오징어") } ->
             DynamicInputInfo(
-                label = "",
+                label = "용기에 담겨있는 경우, 부피를 mL 단위로 입력하세요.",
                 value = "",
+                label2 = "용기에 담겨있지 않은 경우, 가로와 세로, 높이를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.squid
             )
 
         foodDetail.any { it.contains("마른 오징어") } ->
             DynamicInputInfo(
-                label = "",
+                label = "마른 오징어의 몸통의 가로, 세로 길이를 cm 단위로 입력하세요.",
                 value = "",
+                label2 = "마른 오징어의 다리의 총 길이를 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.dried_squid
             )
 
         foodDetail.any { it.contains("낙지") } ->
             DynamicInputInfo(
-                label = "",
+                label = "낙지를 용기에 담았을 때의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.nakji
             )
 
         foodDetail.any { it.contains("문어") } ->
             DynamicInputInfo(
-                label = "",
+                label = "문어의 몸통의 부피를 mL 형태로 입력하세요.",
                 value = "",
+                label2 = "다리는 개당 전체 크기를 직육면체로 취급했을 때 가로, 세로, 그리고 높이를 각각 cm 단위로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.octopus
             )
 
         foodDetail.any { it.contains("쥐포") } ->
             DynamicInputInfo(
-                label = "",
+                label = "쥐포의 가로, 세로 길이를 각각 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.dried_filefish
             )
 
         foodDetail.any { it.contains("채 형태와 자건품") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 자건품의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.dried_goods
             )
 
         foodDetail.any { it.contains("명란젓") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 명란젓을 직육면체로 취급하여 가로, 세로, 그리고 높이를 각각 cm 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.pollack_roe
             )
 
         foodDetail.any { it.contains("그 외의 젓갈류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 젓갈의 부피를 mL 단위로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.other_jeotgal
             )
 
         foodDetail.any { it.contains("어묵") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사각어묵의 경우, 가로와 세로 길이를 각각 cm 단위로 입력하세요.",
                 value = "",
+                label2 = "원형어묵의 경우, 밑면의 반지름과 높이를 각각 cm 단위로 입력하세요.",
                 value2 = "",
                 imageResId = R.drawable.fish_cake
             )
 
         foodDetail.any { it.contains("난류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 계란의 개수를 입력하세요.",
                 value = "",
                 imageResId = R.drawable.egg
             )
 
         foodDetail.any { it.contains("조미료류") } ->
             DynamicInputInfo(
-                label = "",
+                label = "사용한 양의 부피를 mL로 입력하세요.",
                 value = "",
                 imageResId = R.drawable.spices
             )
 
         foodDetail.any { it.contains("티백") } ->
             DynamicInputInfo(
-                label = "",
+                label = "티백이 분말 형태인지, 침출액 형태인지 입력하세요.",
                 value = "",
+                label2 = "사용한 티백의 부피를 mL로 입력하세요.",
+                value2 = "",
                 imageResId = R.drawable.teabag
             )
         else -> null
